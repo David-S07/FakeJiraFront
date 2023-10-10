@@ -1,0 +1,69 @@
+<h1 class="mt-4">Usuarios</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">{{ usuario.id ? 'Edição' : 'Cadastro'}}</li>
+</ol>
+<div class="container">
+
+    <form #usuarioForm="ngForm" (ngSubmit)="onSubmit()">
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-success" role="alert" *ngIf="success == true">
+                    Usuario Salvo/atualizado com Sucesso
+                </div>
+                <div class="alert alert-danger" role="alert" *ngFor="let erro of errors">
+                    {{ erro }}
+                </div> 
+            </div>
+        </div>
+
+        <div class="row" *ngIf="usuario.id">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Id: </label>
+                    <input type="text"  name="id" [ngModel]="usuario.id" class="form-control" disabled="true">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label>Nome: * </label>
+                    <input required #Nome="ngModel" type="text" class="form-control" [(ngModel)]="usuario.nome" name="nome">
+                    <div *ngIf="!Nome.valid && Nome.touched"
+                    class="alert alert-danger" role="alert">
+                        Campo Nome é obrigatório
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label>CPF: * </label>
+                    <input  type="text"  minlength="11" maxlength="11" placeholder="000.000.000-00" class="form-control" [(ngModel)]="usuario.cpf" name="cpf"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required #CPF="ngModel">
+                    <div *ngIf="CPF.invalid && CPF.touched"
+                    class="alert alert-danger" role="alert">
+                        Campo CPF é obrigatório
+                    </div>
+                </div>
+            </div>
+        </div>     
+
+        <div class="row">
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success" *ngIf="!usuario.id" [disabled]="!usuarioForm.valid">
+                    <i class="fa fa-save"></i> Salvar
+                </button>
+                <button type="submit" class="btn btn-primary" *ngIf="usuario.id" [disabled]="!usuarioForm.valid">
+                    <i class="fa fa-sync-alt"></i> Atualizar
+                </button>
+                <button type="button" class="btn btn-danger ml-1" (click)="voltarParaListagem()">
+                    <i class="fa fa-arrow-alt-circle-left"></i>  Voltar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

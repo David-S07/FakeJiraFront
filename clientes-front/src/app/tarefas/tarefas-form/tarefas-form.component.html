@@ -1,0 +1,90 @@
+<h1 class="mt-4">Tarefas</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">{{ tarefa.id ? 'Edição' : 'Cadastro'}}</li>
+</ol>
+<div class="container">
+
+    <form #tarefaForm="ngForm" (ngSubmit)="onSubmit()">
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-success" role="alert" *ngIf="success == true">
+                    Tarefa Salvo/atualizado com Sucesso
+                </div>
+                <div class="alert alert-danger" role="alert" *ngFor="let erro of errors">
+                    {{ erro }}
+                </div> 
+            </div>
+        </div>
+
+        <div class="row" *ngIf="tarefa.id">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Id: </label>
+                    <input type="text"  name="id" [(ngModel)]="tarefa.id" class="form-control" disabled="true">
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>Tarefa: * </label>
+                    <input required #Nome="ngModel" type="text" class="form-control" [(ngModel)]="tarefa.nomeTarefa" name="nomeTarefa">
+                    <div *ngIf="!Nome.valid && Nome.touched"
+                    class="alert alert-danger" role="alert">
+                        Campo Nome da tarefa é obrigatório
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Responsavel: *</label>
+                    <select required class="form-control"> 
+                        <option *ngFor="let usuario of users" name="usuario" [(ngModel)]="tarefa.usuario"> {{ usuario.nome }} </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4" >
+                <div class="form-group">
+                    <label>Data Inicio: </label>
+                    <input type="date" class="form-control" name="dataInicio" [(ngModel)]="tarefa.dataInicio">
+                </div>
+            </div>
+
+            <div class="col-md-4" >
+                <div class="form-group">
+                    <label>Data Fim: </label>
+                    <input type="date" class="form-control" name="dataFim" [(ngModel)]="tarefa.dataFim">
+                </div>
+            </div>    
+            <div class="col-md-4" >
+                <div class="form-group">
+                    <label>Status: *</label>
+                    <select required class="form-control" [(ngModel)]="tarefa.statusTarefa" name="statusTarefa">
+                        <option disabled value="">Selecione uma opção</option>
+                        <option value="AGUARDANDO">AGUARDANDO</option>
+                        <option value="INICIADA">INICIADA</option>
+                        <option value="ENCERRADA">ENCERRADA</option>
+                    </select>  
+                </div>        
+            </div> 
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success" *ngIf="!tarefa.id" [disabled]="!tarefaForm.valid">
+                    <i class="fa fa-save"></i> Salvar
+                </button>
+                <button type="submit" class="btn btn-primary" *ngIf="tarefa.id" [disabled]="!tarefaForm.valid">
+                    <i class="fa fa-sync-alt"></i> Atualizar
+                </button>
+                <button type="button" class="btn btn-danger ml-1" (click)="voltarParaListagem()">
+                    <i class="fa fa-arrow-alt-circle-left"></i>  Voltar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
